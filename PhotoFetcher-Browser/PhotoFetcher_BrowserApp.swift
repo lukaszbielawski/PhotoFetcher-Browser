@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct PhotoFetcher_BrowserApp: App {
+struct PhotoFetcherBrowserApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
