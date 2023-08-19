@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
+//        PhotoBrowserView(viewModel: PhotoBrowserViewModel(service: FakeImageService()))
         PhotoBrowserView()
     }
 }
