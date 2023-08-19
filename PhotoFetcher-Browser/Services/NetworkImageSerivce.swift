@@ -9,7 +9,8 @@ import Combine
 import Foundation
 
 class NetworkImageSerivce: ImageService, ObservableObject {
-    private let accessKey = "Xc9971_FxoJjf26tp8nGcsp27SgViu3jeBwjtGMBFU8"
+//    private let accessKey = "Xc9971_FxoJjf26tp8nGcsp27SgViu3jeBwjtGMBFU8"
+    private let accessKey = "raZSla36FOClHcq0XbxLAf5qOaQiGW6cvGjlDg58yHM"
 
     func fetchImagesData(page: Int, perPage: Int = 30) -> AnyPublisher<[ImageData], Error> {
         print("page \(page)")

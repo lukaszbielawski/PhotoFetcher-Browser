@@ -11,8 +11,6 @@ import SwiftUI
 struct PhotoBrowserView: View {
     @StateObject var viewModel = PhotoBrowserViewModel()
 
-    private let cacheKey = "cache_key"
-
     let columns: [GridItem] = [
         GridItem(.flexible()),
         GridItem(.flexible())
@@ -23,27 +21,18 @@ struct PhotoBrowserView: View {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: geo.size.width * 0.025) {
                     ForEach(Array(viewModel.imagesData.enumerated()), id: \.1.id) { index, imageData in
-//                            AsyncImage(url: URL(string: imageData.urls!.regular!)) { image in
-//                                image
-//                                    .resizable()
-//                                    .scaledToFill()
-//                                    .frame(width: geo.size.width * 0.45, height: geo.size.width * 0.45)
-//                                    .cornerRadius(16)
                         KFImage
-//                        (source: .network(KF.ImageResource(downloadURL: URL(string: imageData.urls!.regular!)!, cacheKey: cacheKey)))
-                            .url(URL(string: imageData.urls!.regular!))
-                            .resizable()
+                            .url(URL(string: imageData.urls!.small!))
                             .placeholder {
                                 ImagePlaceholderView(geo: geo)
                             }
-                            .forceRefresh(true)
+                            .resizable()
+                            .forceRefresh()
                             .cancelOnDisappear(true)
                             .scaledToFill()
                             .frame(width: geo.size.width * 0.45, height: geo.size.width * 0.45)
                             .cornerRadius(16)
-//                        } placeholder: {
-//                            ImagePlaceholderView(geo: geo)
-//                        }
+                            
                             .onAppear {
                                 print(index)
 
@@ -56,20 +45,16 @@ struct PhotoBrowserView: View {
                                     }
                                 }
                             }
-                            .onDisappear {
-//                                KingfisherManager.shared.cache.removeImage(
-//                                    forKey: cacheKey,
-//                                    fromMemory: false,
-//                                    fromDisk: true)
-//                                {
-//                                    print("Removed!")
-//                                }
-                                KingfisherManager.shared.cache.clearCache()
-                            }
+//                            .onDisappear {
+//                                KingfisherManager.shared.cache.clearCache()
+//                            }
                     }
                 }
                 .padding(geo.size.width * 0.025)
             }
+        }
+        .onAppear {
+            ImageCache.default.memoryStorage.config.totalCostLimit = 1024 * 1024 * 200
         }
         .task {
             viewModel.loadFetchRequest()
