@@ -8,10 +8,8 @@
 import Combine
 import Foundation
 
-class FakeImageService: ImageService, ObservableObject {
-    private(set) var imagesData: [ImageData] = []
-
-    func fetchImagesData(page: Int = 0, perPage: Int = 30) -> AnyPublisher<[ImageData], Error> {
+struct FakeImageService: ImageService {
+    func fetchImagesData() -> AnyPublisher<[ImageData], Error> {
         return Bundle.main
             .url(forResource: "fakeData", withExtension: "json")
             .publisher

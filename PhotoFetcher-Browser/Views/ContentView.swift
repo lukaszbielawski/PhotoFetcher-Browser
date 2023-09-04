@@ -9,8 +9,22 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-//        PhotoBrowserView(viewModel: PhotoBrowserViewModel(service: FakeImageService()))
-        PhotoBrowserView()
+        TabView {
+            PhotoBrowserView(imageLoader: ImageLoaderViewModel(service: NetworkImageSerivce()))
+                .tabItem {
+                    Label("Explore", systemImage: "globe.europe.africa.fill")
+                }
+            PhotoBrowserView(imageLoader: ImageLoaderViewModel(service: FavouritesImageService(), isFinite: true))
+                .tabItem {
+                    Label("Liked", systemImage: "heart.fill")
+                }
+        }.onAppear {
+                let defaults = UserDefaults.standard
+                let dictionary = defaults.dictionaryRepresentation()
+                dictionary.keys.forEach { key in
+                    defaults.removeObject(forKey: key)
+                }
+        }
     }
 }
 

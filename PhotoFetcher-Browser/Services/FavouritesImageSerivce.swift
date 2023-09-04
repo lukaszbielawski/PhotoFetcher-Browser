@@ -1,0 +1,33 @@
+//
+//  FavouritesImageSerivce.swift
+//  PhotoFetcher-Browser
+//
+//  Created by Łukasz Bielawski on 04/09/2023.
+//
+
+import Combine
+import Foundation
+
+struct FavouritesImageService: ImageService {
+    func fetchImagesData() -> AnyPublisher<[ImageData], Error> {
+        return UserDefaults.standard.array(forKey: "favourites")
+            .publisher
+            .tryMap { array in
+                let decoder = JSONDecoder()
+                let dataArray = try array.map { id in
+                    let data = UserDefaults.standard.object(forKey: (id as? String)!) as? Data
+                    do {
+                        return try decoder.decode(ImageData.self, from: data!)
+                    } catch {
+                        throw ImageError.decodingError
+                    }
+                } as? [ImageData]
+                return dataArray!
+            }
+//            .decode(type: [ImageData].self, decoder: JSONDecoder())
+            .mapError { error in
+                ImageError.otherError(error: error)
+            }
+            .eraseToAnyPublisher()
+    }
+}

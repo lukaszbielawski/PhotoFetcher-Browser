@@ -7,12 +7,17 @@
 
 import Combine
 import Foundation
+import SwiftUI
 
-class NetworkImageSerivce: ImageService, ObservableObject {
+class NetworkImageSerivce: PageImageService {
+    @Published var page: Int = 0
+    let perPage: Int = 30
+
 //    private let accessKey = "Xc9971_FxoJjf26tp8nGcsp27SgViu3jeBwjtGMBFU8"
     private let accessKey = "raZSla36FOClHcq0XbxLAf5qOaQiGW6cvGjlDg58yHM"
 
-    func fetchImagesData(page: Int, perPage: Int = 30) -> AnyPublisher<[ImageData], Error> {
+    func fetchImagesData() -> AnyPublisher<[ImageData], Error> {
+        page += 1
         print("page \(page)")
 
         let urlScheme = "https://api.unsplash.com/photos?page=\(page)&per_page=\(perPage)&client_id=\(accessKey)"

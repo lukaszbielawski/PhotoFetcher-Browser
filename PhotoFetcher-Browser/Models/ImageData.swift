@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct ImageData: Decodable, Encodable, Identifiable {
+struct ImageData: Codable, Identifiable {
     let id: UUID = .init()
 
-    let slug: String?
+    let slug: String
     let createdAt, updatedAt: Date?
     let promotedAt: Date?
     let width, height: Int?

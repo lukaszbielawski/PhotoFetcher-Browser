@@ -9,5 +9,5 @@ import Combine
 import Foundation
 
 protocol ImageService {
-    func fetchImagesData(page: Int, perPage: Int) -> AnyPublisher<[ImageData], Error>
+    func fetchImagesData() -> AnyPublisher<[ImageData], Error>
 }
