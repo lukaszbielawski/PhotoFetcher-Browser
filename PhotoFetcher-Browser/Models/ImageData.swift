@@ -19,6 +19,25 @@ struct ImageData: Codable, Identifiable {
     let urls: Urls?
 
     struct Urls: Codable {
-        let raw, full, regular, small, thumb: String?
+        let raw, full, regular, small, thumb: String
+    }
+}
+
+enum ImageSize {
+    case raw, full, regular, small, thumb
+
+    var keyPath: KeyPath<ImageData.Urls, String> {
+        switch self {
+        case .raw:
+            return \.raw
+        case .full:
+            return \.full
+        case .regular:
+            return \.regular
+        case .small:
+            return \.small
+        case .thumb:
+            return \.thumb
+        }
     }
 }

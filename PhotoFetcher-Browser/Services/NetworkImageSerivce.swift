@@ -9,7 +9,7 @@ import Combine
 import Foundation
 import SwiftUI
 
-class NetworkImageSerivce: PageImageService {
+class NetworkImageSerivce: ImageService {
     @Published var page: Int = 0
     let perPage: Int = 30
 

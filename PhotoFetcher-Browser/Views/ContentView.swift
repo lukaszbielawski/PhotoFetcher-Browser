@@ -19,11 +19,11 @@ struct ContentView: View {
                     Label("Liked", systemImage: "heart.fill")
                 }
         }.onAppear {
-                let defaults = UserDefaults.standard
-                let dictionary = defaults.dictionaryRepresentation()
-                dictionary.keys.forEach { key in
-                    defaults.removeObject(forKey: key)
-                }
+            //                let defaults = UserDefaults.standard
+            //                let dictionary = defaults.dictionaryRepresentation()
+            //                dictionary.keys.forEach { key in
+            //                    defaults.removeObject(forKey: key)
+            //                }
         }
     }
 }

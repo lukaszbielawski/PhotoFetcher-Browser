@@ -9,10 +9,12 @@ import Combine
 import Foundation
 import SwiftUI
 
-class ImageLoaderViewModel: ImageLoader {
+class ImageLoaderViewModel: ImageLoader, FavouritesModerator {
+    
     @Published var imagesData: [ImageData] = []
 
     private(set) var bag = CancellableBag()
+    var favouritesManager: FavouritesService = FavouritesManager()
     private var service: ImageService
     var isFinite: Bool
 
@@ -46,7 +48,7 @@ class ImageLoaderViewModel: ImageLoader {
         let userDefaults = UserDefaults.standard
 
         let encoder = JSONEncoder()
-        let encodedImage = try? encoder.encode(image)
+        guard let encodedImage = try? encoder.encode(image) else { return }
 
         userDefaults.set(encodedImage, forKey: image.slug)
 
@@ -65,8 +67,8 @@ class ImageLoaderViewModel: ImageLoader {
 
         userDefaults.removeObject(forKey: image.slug)
 
-        var array = userDefaults.array(forKey: favouritesKey) as? [String]
-        array!.removeAll(where: { $0 == image.slug })
+        guard var array = userDefaults.array(forKey: favouritesKey) as? [String] else { return}
+        array.removeAll(where: { $0 == image.slug })
         userDefaults.removeObject(forKey: favouritesKey)
         userDefaults.set(array, forKey: favouritesKey)
     }

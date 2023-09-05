@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import UIKit
+import Kingfisher
 
-struct PhotoScrollView<Loader: ImageLoader>: View {
-    @ObservedObject var viewModel: Loader
+struct PhotoScrollView<Loader: ImageLoader & FavouritesModerator>: View {
+    @State private var favouritesChanged: Bool = false
+    @ObservedObject var imageLoader: Loader
 
     let columns: [GridItem] = [
         GridItem(.flexible()),
@@ -16,14 +19,39 @@ struct PhotoScrollView<Loader: ImageLoader>: View {
     ]
 
     var body: some View {
-        GeometryReader { geo in
-            ScrollView {
-                LazyVGrid(columns: columns, spacing: geo.size.width * 0.025) {
-                    ForEach(Array(viewModel.imagesData.enumerated()), id: \.1.id) { index, imageData in
-                        PhotoTileView(imageData: imageData, geo: geo, index: index, imageLoader: viewModel)
+        let _ = Self._printChanges()
+        NavigationView {
+            GeometryReader { geo in
+                ScrollView(showsIndicators: false) {
+                    LazyVGrid(columns: columns, spacing: geo.size.width * 0.025) {
+                        ForEach(Array(imageLoader.imagesData.enumerated()), id: \.1.id) { index, imageData in
+                            NavigationLink(destination: PhotoDetailsView(imageData: imageData)) {
+                                PhotoTileView(imageData: imageData,
+                                              geoWidth: geo.size.width * 0.45,
+                                              moderator: imageLoader)
+                                    .task {
+                                        if !imageLoader.isFinite {
+                                            if index + 1 == $imageLoader.imagesData.count {
+                                                print("load")
+                                                imageLoader.loadFetchRequest()
+                                            }
+                                        }
+                                    }
+                            }
+                        }
+                    }
+                    .padding(geo.size.width * 0.025)
+                    .buttonStyle(.empty)
+                    .navigationBarHidden(true)
+                    .onAppear {
+                        ImageCache.default.memoryStorage.config.totalCostLimit = 1024 * 1024 * 200
+                    }
+                    .task {
+                        if imageLoader.imagesData.isEmpty || imageLoader.isFinite {
+                            imageLoader.loadFetchRequest()
+                        }
                     }
                 }
-                .padding(geo.size.width * 0.025)
             }
         }
     }
@@ -31,6 +59,6 @@ struct PhotoScrollView<Loader: ImageLoader>: View {
 
 struct PhotoScrollView_Previews: PreviewProvider {
     static var previews: some View {
-        PhotoScrollView(viewModel: ImageLoaderViewModel(service: FakeImageService()))
+        PhotoScrollView(imageLoader: ImageLoaderViewModel(service: FakeImageService()))
     }
 }

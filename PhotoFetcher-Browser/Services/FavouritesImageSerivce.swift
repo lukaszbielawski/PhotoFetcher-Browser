@@ -16,15 +16,13 @@ struct FavouritesImageService: ImageService {
                 let decoder = JSONDecoder()
                 let dataArray = try array.map { id in
                     let data = UserDefaults.standard.object(forKey: (id as? String)!) as? Data
-                    do {
-                        return try decoder.decode(ImageData.self, from: data!)
-                    } catch {
+                    guard let imageData = try? decoder.decode(ImageData.self, from: data!) else {
                         throw ImageError.decodingError
                     }
-                } as? [ImageData]
-                return dataArray!
+                    return imageData
+                }
+                return dataArray
             }
-//            .decode(type: [ImageData].self, decoder: JSONDecoder())
             .mapError { error in
                 ImageError.otherError(error: error)
             }

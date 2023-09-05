@@ -8,12 +8,12 @@
 import Kingfisher
 import SwiftUI
 
-struct PhotoTileView<Loader: ImageLoader>: View {
+struct PhotoTileView<Moderator: FavouritesModerator>: View {
     var imageData: ImageData
-    var geo: GeometryProxy
-    var index: Int
+    var geoWidth: CGFloat?
+    var imageSize: ImageSize = .small
 
-    @ObservedObject var imageLoader: Loader
+    @ObservedObject var moderator: Moderator
     @State var dampingFraction: Double = 0.5
     @State var isFavourite: Bool = true
     @State var isHearted: Bool = false {
@@ -31,39 +31,35 @@ struct PhotoTileView<Loader: ImageLoader>: View {
     var body: some View {
         ZStack {
             KFImage
-                .url(URL(string: imageData.urls!.small!))
+                .url(URL(string: imageData.urls![keyPath: imageSize.keyPath]))
                 .placeholder {
-                    ImagePlaceholderView(geo: geo)
+                    ImagePlaceholderView(geoWidth: geoWidth)
                 }
                 .resizable()
                 .cancelOnDisappear(true)
                 .scaledToFill()
-                .frame(width: geo.size.width * 0.45, height: geo.size.width * 0.45)
+                .if(geoWidth != nil) { view in
+                    view.frame(width: geoWidth, height: geoWidth)
+                }
                 .contentShape(Rectangle())
                 .cornerRadius(16)
-                .onAppear {
-                    if !imageLoader.isFinite {
-                        if index + 1 == $imageLoader.imagesData.count {
-                            DispatchQueue.main.async {
-                                print("load")
-                                imageLoader.loadFetchRequest()
-                            }
-                        }
-                    }
-                }
                 .onTapGesture(count: 2) {
                     if !(self.isHearted) {
                         self.isHearted = true
 
                         self.isFavourite.toggle()
                         if self.isFavourite {
-                            try? imageLoader.storeImageInFavourites(image: imageData)
+                            moderator.favouritesManager.storeImageInFavourites(image: imageData)
                         } else {
-                            try? imageLoader.removeImageFromFavourites(image: imageData)
+                            moderator.favouritesManager.removeImageFromFavourites(image: imageData)
                         }
                     }
                 }
-            HeartView(isHearted: $isHearted, dampingFraction: $dampingFraction, isFavourite: $isFavourite, geo: geo)
+
+            HeartView(isHearted: $isHearted,
+                      dampingFraction: $dampingFraction,
+                      isFavourite: $isFavourite,
+                      geoWidth: geoWidth)
                 .allowsHitTesting(false)
         }.onAppear {
             if UserDefaults.standard.array(forKey: "favourites")?.contains(where: { slug in
@@ -83,13 +79,15 @@ private extension PhotoTileView {
         @Binding var dampingFraction: Double
         @Binding var isFavourite: Bool
 
-        var geo: GeometryProxy
+        var geoWidth: CGFloat?
 
         var body: some View {
             Image(systemName: isFavourite ? "heart.fill" : "heart.slash.fill")
                 .resizable()
                 .foregroundColor(Color.white)
-                .frame(width: geo.size.width * 0.15, height: geo.size.width * 0.15)
+                .if(geoWidth != nil) { view in
+                    view.frame(width: geoWidth! * 0.33, height: geoWidth! * 0.33)
+                }
                 .shadow(radius: 4.0)
                 .scaleEffect(isHearted ? 1.0 : 0.001)
                 .animation(Animation.spring(response: 0.25,
