@@ -8,6 +8,7 @@
 import Foundation
 
 protocol FavouritesService {
-    func storeImageInFavourites(image: ImageData)
-    func removeImageFromFavourites(image: ImageData)
+    func storeImageInFavourites(imageData: ImageData)
+    func removeImageFromFavourites(imageData: ImageData)
+    func isAlreadyFavourite(imageData: ImageData) -> Bool
 }

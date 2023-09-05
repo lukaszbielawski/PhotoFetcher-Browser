@@ -31,7 +31,7 @@ struct PhotoTileView<Moderator: FavouritesModerator>: View {
     var body: some View {
         ZStack {
             KFImage
-                .url(URL(string: imageData.urls![keyPath: imageSize.keyPath]))
+                .url(URL(string: imageData.urls[keyPath: imageSize.keyPath]))
                 .placeholder {
                     ImagePlaceholderView(geoWidth: geoWidth)
                 }
@@ -49,9 +49,9 @@ struct PhotoTileView<Moderator: FavouritesModerator>: View {
 
                         self.isFavourite.toggle()
                         if self.isFavourite {
-                            moderator.favouritesManager.storeImageInFavourites(image: imageData)
+                            moderator.favouritesManager.storeImageInFavourites(imageData: imageData)
                         } else {
-                            moderator.favouritesManager.removeImageFromFavourites(image: imageData)
+                            moderator.favouritesManager.removeImageFromFavourites(imageData: imageData)
                         }
                     }
                 }
@@ -62,13 +62,7 @@ struct PhotoTileView<Moderator: FavouritesModerator>: View {
                       geoWidth: geoWidth)
                 .allowsHitTesting(false)
         }.onAppear {
-            if UserDefaults.standard.array(forKey: "favourites")?.contains(where: { slug in
-                imageData.slug == (slug as? String)!
-            }) ?? false {
-                isFavourite = true
-            } else {
-                isFavourite = false
-            }
+            isFavourite = moderator.favouritesManager.isAlreadyFavourite(imageData: imageData) 
         }
     }
 }

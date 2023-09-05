@@ -9,6 +9,7 @@ import Combine
 import Foundation
 
 struct FavouritesImageService: ImageService {
+    
     func fetchImagesData() -> AnyPublisher<[ImageData], Error> {
         return UserDefaults.standard.array(forKey: "favourites")
             .publisher
@@ -23,8 +24,8 @@ struct FavouritesImageService: ImageService {
                 }
                 return dataArray
             }
-            .mapError { error in
-                ImageError.otherError(error: error)
+            .mapError { _ in
+                ImageError.decodingError
             }
             .eraseToAnyPublisher()
     }

@@ -5,9 +5,9 @@
 //  Created by Łukasz Bielawski on 04/09/2023.
 //
 
+import Kingfisher
 import SwiftUI
 import UIKit
-import Kingfisher
 
 struct PhotoScrollView<Loader: ImageLoader & FavouritesModerator>: View {
     @State private var favouritesChanged: Bool = false
@@ -19,7 +19,6 @@ struct PhotoScrollView<Loader: ImageLoader & FavouritesModerator>: View {
     ]
 
     var body: some View {
-        let _ = Self._printChanges()
         NavigationView {
             GeometryReader { geo in
                 ScrollView(showsIndicators: false) {
@@ -52,7 +51,7 @@ struct PhotoScrollView<Loader: ImageLoader & FavouritesModerator>: View {
                         }
                     }
                 }
-            }
+            }.background(Color.primaryColor)
         }
     }
 }

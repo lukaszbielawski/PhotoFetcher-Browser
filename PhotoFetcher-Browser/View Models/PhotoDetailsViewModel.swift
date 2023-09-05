@@ -9,5 +9,13 @@ import Foundation
 
 class PhotoDetailsViewModel: ObservableObject, FavouritesModerator {
     var favouritesManager: FavouritesService = FavouritesManager()
-    
+    let imageData: ImageData
+
+    @Published var isFavourite: Bool
+
+    init(favouritesManager: FavouritesService, imageData: ImageData) {
+        self.favouritesManager = favouritesManager
+        self.imageData = imageData
+        self.isFavourite = favouritesManager.isAlreadyFavourite(imageData: imageData)
+    }
 }

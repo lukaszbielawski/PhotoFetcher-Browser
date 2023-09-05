@@ -10,7 +10,6 @@ import Foundation
 import SwiftUI
 
 class ImageLoaderViewModel: ImageLoader, FavouritesModerator {
-    
     @Published var imagesData: [ImageData] = []
 
     private(set) var bag = CancellableBag()
@@ -67,7 +66,7 @@ class ImageLoaderViewModel: ImageLoader, FavouritesModerator {
 
         userDefaults.removeObject(forKey: image.slug)
 
-        guard var array = userDefaults.array(forKey: favouritesKey) as? [String] else { return}
+        guard var array = userDefaults.array(forKey: favouritesKey) as? [String] else { return }
         array.removeAll(where: { $0 == image.slug })
         userDefaults.removeObject(forKey: favouritesKey)
         userDefaults.set(array, forKey: favouritesKey)

@@ -8,32 +8,38 @@
 import Foundation
 
 struct FavouritesManager: FavouritesService {
-    func storeImageInFavourites(image: ImageData) {
+    func isAlreadyFavourite(imageData: ImageData) -> Bool {
+        return UserDefaults.standard.array(forKey: "favourites")?.contains(where: { slug in
+            imageData.slug == (slug as? String)!
+        }) ?? false
+    }
+    
+    func storeImageInFavourites(imageData: ImageData) {
         let favouritesKey = "favourites"
         let userDefaults = UserDefaults.standard
 
         let encoder = JSONEncoder()
-        guard let encodedImage = try? encoder.encode(image) else { return }
+        guard let encodedImage = try? encoder.encode(imageData) else { return }
 
-        userDefaults.set(encodedImage, forKey: image.slug)
+        userDefaults.set(encodedImage, forKey: imageData.slug)
 
         guard var array = userDefaults.array(forKey: favouritesKey) else {
-            userDefaults.set([image.slug], forKey: favouritesKey)
+            userDefaults.set([imageData.slug], forKey: favouritesKey)
             return
         }
-        array.append(image.slug)
+        array.append(imageData.slug)
         userDefaults.removeObject(forKey: favouritesKey)
         userDefaults.set(array, forKey: favouritesKey)
     }
 
-    func removeImageFromFavourites(image: ImageData) {
+    func removeImageFromFavourites(imageData: ImageData) {
         let favouritesKey = "favourites"
         let userDefaults = UserDefaults.standard
 
-        userDefaults.removeObject(forKey: image.slug)
+        userDefaults.removeObject(forKey: imageData.slug)
 
         guard var array = userDefaults.array(forKey: favouritesKey) as? [String] else { return}
-        array.removeAll(where: { $0 == image.slug })
+        array.removeAll(where: { $0 == imageData.slug })
         userDefaults.removeObject(forKey: favouritesKey)
         userDefaults.set(array, forKey: favouritesKey)
     }
