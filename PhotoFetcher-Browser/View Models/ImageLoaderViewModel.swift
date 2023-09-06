@@ -9,11 +9,10 @@ import Combine
 import Foundation
 import SwiftUI
 
-class ImageLoaderViewModel: ImageLoader, FavouritesModerator {
+class ImageLoaderViewModel: ImageLoader, ObservableObject {
     @Published var imagesData: [ImageData] = []
 
     private(set) var bag = CancellableBag()
-    var favouritesManager: FavouritesService = FavouritesManager()
     private var service: ImageService
     var isFinite: Bool
 

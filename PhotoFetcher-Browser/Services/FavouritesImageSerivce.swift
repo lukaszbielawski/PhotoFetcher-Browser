@@ -9,7 +9,6 @@ import Combine
 import Foundation
 
 struct FavouritesImageService: ImageService {
-    
     func fetchImagesData() -> AnyPublisher<[ImageData], Error> {
         return UserDefaults.standard.array(forKey: "favourites")
             .publisher

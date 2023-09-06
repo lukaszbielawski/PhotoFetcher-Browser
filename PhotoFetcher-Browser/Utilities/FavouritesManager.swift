@@ -7,14 +7,16 @@
 
 import Foundation
 
-struct FavouritesManager: FavouritesService {
-    func isAlreadyFavourite(imageData: ImageData) -> Bool {
+struct FavouritesManager {
+    private init() {}
+
+    static func isAlreadyFavourite(imageData: ImageData) -> Bool {
         return UserDefaults.standard.array(forKey: "favourites")?.contains(where: { slug in
             imageData.slug == (slug as? String)!
         }) ?? false
     }
-    
-    func storeImageInFavourites(imageData: ImageData) {
+
+    static func storeImageInFavourites(imageData: ImageData) {
         let favouritesKey = "favourites"
         let userDefaults = UserDefaults.standard
 
@@ -32,13 +34,13 @@ struct FavouritesManager: FavouritesService {
         userDefaults.set(array, forKey: favouritesKey)
     }
 
-    func removeImageFromFavourites(imageData: ImageData) {
+    static func removeImageFromFavourites(imageData: ImageData) {
         let favouritesKey = "favourites"
         let userDefaults = UserDefaults.standard
 
         userDefaults.removeObject(forKey: imageData.slug)
 
-        guard var array = userDefaults.array(forKey: favouritesKey) as? [String] else { return}
+        guard var array = userDefaults.array(forKey: favouritesKey) as? [String] else { return }
         array.removeAll(where: { $0 == imageData.slug })
         userDefaults.removeObject(forKey: favouritesKey)
         userDefaults.set(array, forKey: favouritesKey)

@@ -8,13 +8,11 @@
 import SwiftUI
 
 struct ImagePlaceholderView: View {
-    let geoWidth: CGFloat?
+    let geoWidth: CGFloat
 
     var body: some View {
         ProgressView()
-            .if(geoWidth != nil) { view in
-                view.frame(width: geoWidth!, height: geoWidth!)
-            }
+            .frame(width: geoWidth, height: geoWidth)
             .background(Color.gray.cornerRadius(16))
     }
 }

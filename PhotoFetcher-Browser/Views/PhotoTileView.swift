@@ -8,12 +8,12 @@
 import Kingfisher
 import SwiftUI
 
-struct PhotoTileView<Moderator: FavouritesModerator>: View {
+struct PhotoTileView: View {
     var imageData: ImageData
-    var geoWidth: CGFloat?
+    var geoWidth: CGFloat
     var imageSize: ImageSize = .small
 
-    @ObservedObject var moderator: Moderator
+//    @ObservedObject var moderator: Moderator
     @State var dampingFraction: Double = 0.5
     @State var isFavourite: Bool = true
     @State var isHearted: Bool = false {
@@ -37,21 +37,20 @@ struct PhotoTileView<Moderator: FavouritesModerator>: View {
                 }
                 .resizable()
                 .cancelOnDisappear(true)
+                .retry(DelayRetryStrategy(maxRetryCount: 10, retryInterval: .seconds(10)))
                 .scaledToFill()
-                .if(geoWidth != nil) { view in
-                    view.frame(width: geoWidth, height: geoWidth)
-                }
+                .frame(width: geoWidth, height: geoWidth)
                 .contentShape(Rectangle())
                 .cornerRadius(16)
                 .onTapGesture(count: 2) {
                     if !(self.isHearted) {
                         self.isHearted = true
+                        self.isFavourite = !FavouritesManager.isAlreadyFavourite(imageData: imageData)
 
-                        self.isFavourite.toggle()
                         if self.isFavourite {
-                            moderator.favouritesManager.storeImageInFavourites(imageData: imageData)
+                            FavouritesManager.storeImageInFavourites(imageData: imageData)
                         } else {
-                            moderator.favouritesManager.removeImageFromFavourites(imageData: imageData)
+                            FavouritesManager.removeImageFromFavourites(imageData: imageData)
                         }
                     }
                 }
@@ -62,7 +61,7 @@ struct PhotoTileView<Moderator: FavouritesModerator>: View {
                       geoWidth: geoWidth)
                 .allowsHitTesting(false)
         }.onAppear {
-            isFavourite = moderator.favouritesManager.isAlreadyFavourite(imageData: imageData) 
+            isFavourite = FavouritesManager.isAlreadyFavourite(imageData: imageData)
         }
     }
 }
@@ -73,15 +72,13 @@ private extension PhotoTileView {
         @Binding var dampingFraction: Double
         @Binding var isFavourite: Bool
 
-        var geoWidth: CGFloat?
+        var geoWidth: CGFloat
 
         var body: some View {
             Image(systemName: isFavourite ? "heart.fill" : "heart.slash.fill")
                 .resizable()
                 .foregroundColor(Color.white)
-                .if(geoWidth != nil) { view in
-                    view.frame(width: geoWidth! * 0.33, height: geoWidth! * 0.33)
-                }
+                .frame(width: geoWidth * 0.33, height: geoWidth * 0.33)
                 .shadow(radius: 4.0)
                 .scaleEffect(isHearted ? 1.0 : 0.001)
                 .animation(Animation.spring(response: 0.25,

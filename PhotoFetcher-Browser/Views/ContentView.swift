@@ -24,11 +24,11 @@ struct ContentView: View {
             UITabBar.appearance().scrollEdgeAppearance = UITabBarAppearance.init(idiom: .unspecified)
         }
 //        .onAppear {
-        //                let defaults = UserDefaults.standard
-        //                let dictionary = defaults.dictionaryRepresentation()
-        //                dictionary.keys.forEach { key in
-        //                    defaults.removeObject(forKey: key)
-        //                }
+//                        let defaults = UserDefaults.standard
+//                        let dictionary = defaults.dictionaryRepresentation()
+//                        dictionary.keys.forEach { key in
+//                            defaults.removeObject(forKey: key)
+//                        }
 //        }
     }
 }

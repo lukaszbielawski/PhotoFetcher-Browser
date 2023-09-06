@@ -9,7 +9,7 @@ import Kingfisher
 import SwiftUI
 import UIKit
 
-struct PhotoScrollView<Loader: ImageLoader & FavouritesModerator>: View {
+struct PhotoScrollView<Loader: ImageLoader>: View {
     @State private var favouritesChanged: Bool = false
     @ObservedObject var imageLoader: Loader
 
@@ -24,10 +24,12 @@ struct PhotoScrollView<Loader: ImageLoader & FavouritesModerator>: View {
                 ScrollView(showsIndicators: false) {
                     LazyVGrid(columns: columns, spacing: geo.size.width * 0.025) {
                         ForEach(Array(imageLoader.imagesData.enumerated()), id: \.1.id) { index, imageData in
-                            NavigationLink(destination: PhotoDetailsView(imageData: imageData)) {
+                            NavigationLink(destination:
+                                PhotoDetailsView(imageData: imageData,
+                                                 viewModel: PhotoDetailsViewModel(imageData: imageData)))
+                            {
                                 PhotoTileView(imageData: imageData,
-                                              geoWidth: geo.size.width * 0.45,
-                                              moderator: imageLoader)
+                                              geoWidth: geo.size.width * 0.45)
                                     .task {
                                         if !imageLoader.isFinite {
                                             if index + 1 == $imageLoader.imagesData.count {
