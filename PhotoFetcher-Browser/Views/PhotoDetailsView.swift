@@ -11,8 +11,12 @@ import LinkPresentation
 import SwiftUI
 
 struct PhotoDetailsView: View {
-    let imageData: ImageData
     @StateObject var viewModel: PhotoDetailsViewModel
+    @Binding var detailsPresented: Bool
+
+    @Environment(\.dismiss) var dismiss
+
+    let imageData: ImageData
 
     var body: some View {
         GeometryReader { geo in
@@ -54,22 +58,31 @@ struct PhotoDetailsView: View {
                     }
                     Group {
                         DetailsButtonsView(geoWidth: geo.size.width * 0.9 - 24.0)
-                            .padding(8)
-//                        DetailButtonView(systemImage: "globe",
-//                                         color: Color.accentColor,
-//                                         width: geo.size.width * 0.4,
-//                                         height: geo.size.width * 0.15,
-//                                         title: "Homepage") {
-//                            UIApplication.shared.open(URL(string: viewModel.imageData.user.links.html)!)
-//                        }
                         PhotoDetailsDescriptionView(geoWidth: geo.size.width * 0.9 - 24.0)
-                            .padding(8)
                     }
+                    .padding(8)
                     .environmentObject(viewModel)
                 }
                 .navigationBarTitleDisplayMode(.inline)
+                .navigationBarBackButtonHidden(true)
+                .navigationBarItems(leading:
+                                        Button(action: {
+                    dismiss()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        detailsPresented = false
+                    }
+                }) {
+                    HStack {
+                        Image(systemName: "chevron.left")
+                        Text("Back")
+                            .fontWeight(.medium)
+                    }
+                    .foregroundColor(Color.accentColor)
+                })
             }
             .onAppear {
+//                UINavigationBar.appearance().barTintColor = UIColor(Color.primaryColor)
+//                UINavigationBar.appearance().isTranslucent = true
                 viewModel.isFavourite = FavouritesManager.isAlreadyFavourite(imageData: imageData)
             }
             .background(Color.primaryColor)

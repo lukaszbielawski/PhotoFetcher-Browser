@@ -9,11 +9,15 @@ import Combine
 import Foundation
 import SwiftUI
 
-class ImageLoaderViewModel: ImageLoader, ObservableObject {
+class ImageLoaderViewModel: ObservableObject {
     @Published var imagesData: [ImageData] = []
+    @Published var query: String = ""
+    @Published var favouritesChanged: Bool = false
+    @Published var detailsPresented: Bool = false
+    @Published var firstAppear: Bool = true
 
-    private(set) var bag = CancellableBag()
-    private var service: ImageService
+    var bag = CancellableBag()
+    var service: ImageService
     var isFinite: Bool
 
     init(service: ImageService = FakeImageService(), isFinite: Bool = false) {
@@ -21,9 +25,9 @@ class ImageLoaderViewModel: ImageLoader, ObservableObject {
         self.isFinite = isFinite
     }
 
-    func loadFetchRequest() {
+    func loadFetchRequest(query: String) {
         service
-            .fetchImagesData()
+            .fetchImagesData(query: query)
             .receive(on: DispatchQueue.main)
             .sink { res in
                 switch res {
@@ -39,6 +43,13 @@ class ImageLoaderViewModel: ImageLoader, ObservableObject {
                     self?.imagesData = imagesData
                 }
             }.store(in: &bag)
+    }
+
+    func resetData() {
+        imagesData.removeAll()
+        if type(of: service) == NetworkImageSerivce.self {
+            (service as? NetworkImageSerivce)!.page = 0
+        }
     }
 
     func storeImageInFavourites(image: ImageData) {

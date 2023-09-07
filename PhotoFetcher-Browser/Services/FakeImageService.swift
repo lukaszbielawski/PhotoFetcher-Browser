@@ -9,7 +9,7 @@ import Combine
 import Foundation
 
 struct FakeImageService: ImageService {
-    func fetchImagesData() -> AnyPublisher<[ImageData], Error> {
+    func fetchImagesData(query: String = "") -> AnyPublisher<[ImageData], Error> {
         return Bundle.main
             .url(forResource: "fakeData", withExtension: "json")
             .publisher

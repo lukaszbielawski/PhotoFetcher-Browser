@@ -10,17 +10,21 @@ import Foundation
 import SwiftUI
 
 class NetworkImageSerivce: ImageService {
-    @Published var page: Int = 0
-    let perPage: Int = 30
+    var page: Int = 0
 
-//    private let accessKey = "Xc9971_FxoJjf26tp8nGcsp27SgViu3jeBwjtGMBFU8"
+    private let perPage: Int = 30
+
     private let accessKey = "raZSla36FOClHcq0XbxLAf5qOaQiGW6cvGjlDg58yHM"
 
-    func fetchImagesData() -> AnyPublisher<[ImageData], Error> {
+    func fetchImagesData(query: String = "") -> AnyPublisher<[ImageData], Error> {
         page += 1
-        print("page \(page)")
+        print("page \(page), query: \(query)")
 
-        let urlScheme = "https://api.unsplash.com/photos?page=\(page)&per_page=\(perPage)&client_id=\(accessKey)"
+        let urlScheme = """
+        https://api.unsplash.com/\(query != "" ? "search/" : "")photos?\
+        page=\(page)&per_page=\(perPage)&client_id=\(accessKey)\(query != "" ? "&query=\(query)" : "")
+        """
+
         let url = URL(string: urlScheme)
         guard let url else {
             return Fail(error: ImageError.invalidUrlError)
@@ -37,11 +41,16 @@ class NetworkImageSerivce: ImageService {
                     throw ImageError.responseCodeError
                 }
 
-                guard let images = try? JSONDecoder().decode([ImageData].self, from: res.data) else {
+                guard let images = try? JSONDecoder().decode(self.returnType(query: query), from: res.data) else {
                     throw ImageError.decodingError
                 }
-                return images
+
+                return query != "" ? (images as? SearchImageData)!.results : (images as? [ImageData])!
             }
             .eraseToAnyPublisher()
+    }
+
+    private func returnType(query: String) -> Decodable.Type {
+        return query != "" ? SearchImageData.self : [ImageData].self
     }
 }
