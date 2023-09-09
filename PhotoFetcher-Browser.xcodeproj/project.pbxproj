@@ -14,7 +14,6 @@
 		B2A339A42AA5C13600013162 /* PhotoTileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A339A32AA5C13600013162 /* PhotoTileView.swift */; };
 		B2A339A82AA5DDBA00013162 /* PhotoBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A339A72AA5DDBA00013162 /* PhotoBrowserView.swift */; };
 		B2B2C10B2AA7194100918169 /* PhotoDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B2C10A2AA7194100918169 /* PhotoDetailsView.swift */; };
-		B2B2C1132AA71C1300918169 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B2C1122AA71C1300918169 /* ViewExtensions.swift */; };
 		B2B2C1152AA735B100918169 /* ButtonStyleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B2C1142AA735B100918169 /* ButtonStyleExtensions.swift */; };
 		B2B2C1172AA741AF00918169 /* FavouritesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B2C1162AA741AF00918169 /* FavouritesManager.swift */; };
 		B2B2C11D2AA7657300918169 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B2C11C2AA7657300918169 /* ColorExtension.swift */; };
@@ -52,7 +51,6 @@
 		B2A339A32AA5C13600013162 /* PhotoTileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoTileView.swift; sourceTree = "<group>"; };
 		B2A339A72AA5DDBA00013162 /* PhotoBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoBrowserView.swift; sourceTree = "<group>"; };
 		B2B2C10A2AA7194100918169 /* PhotoDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailsView.swift; sourceTree = "<group>"; };
-		B2B2C1122AA71C1300918169 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		B2B2C1142AA735B100918169 /* ButtonStyleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyleExtensions.swift; sourceTree = "<group>"; };
 		B2B2C1162AA741AF00918169 /* FavouritesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesManager.swift; sourceTree = "<group>"; };
 		B2B2C11C2AA7657300918169 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
@@ -129,7 +127,6 @@
 				B2B3B1BD2A8E419F00A1E4C0 /* CombineExtensions.swift */,
 				B2D8519A2A90A8E80029CACB /* ImageExtensions.swift */,
 				B2D869A62AA61CC800E792D4 /* ArrayExtensions.swift */,
-				B2B2C1122AA71C1300918169 /* ViewExtensions.swift */,
 				B2B2C1142AA735B100918169 /* ButtonStyleExtensions.swift */,
 				B2B2C11C2AA7657300918169 /* ColorExtension.swift */,
 				B28248FA2AAA576F0078AC7B /* UIApplicationExtensions.swift */,
@@ -340,7 +337,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B2B2C1132AA71C1300918169 /* ViewExtensions.swift in Sources */,
 				B2B3B1B62A8E36CD00A1E4C0 /* ImageLoaderViewModel.swift in Sources */,
 				B2B3B1B92A8E371600A1E4C0 /* ImageService.swift in Sources */,
 				B2B2C11D2AA7657300918169 /* ColorExtension.swift in Sources */,
@@ -503,13 +499,14 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "PhotoFetcher-Browser/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Photo Browser";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Please allow access to your photo library to store downloaded photos.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -535,13 +532,14 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "PhotoFetcher-Browser/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Photo Browser";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Please allow access to your photo library to store downloaded photos.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

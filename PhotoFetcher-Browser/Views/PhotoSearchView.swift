@@ -28,10 +28,6 @@ struct PhotoSearchView: View {
                 .offset(y: viewModel.isSearchBarHidden ? 0.0 : viewModel.searchBarHeight)
                 .offset(y: viewModel.isSearchBarHidden ? 0.1 : 0.0)
                 .animation(.easeInOut(duration: 0.5), value: viewModel.isSearchBarHidden)
-                .onChange(of: viewModel.isSearchBarHidden) { value in
-                    print(value)
-                    print(viewModel.searchBarHeight)
-                }
             SearchBarView(query: $viewModel.imageLoader.query)
                 .background(Color.primaryColor)
                 .offset(y: viewModel.isSearchBarHidden ? -2 * viewModel.searchBarHeight : 0)

@@ -18,7 +18,6 @@ class NetworkImageSerivce: ImageService {
 
     func fetchImagesData(query: String = "") -> AnyPublisher<[ImageData], Error> {
         page += 1
-        print("page \(page), query: \(query)")
 
         let urlScheme = """
         https://api.unsplash.com/\(query != "" ? "search/" : "")photos?\

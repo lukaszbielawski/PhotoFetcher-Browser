@@ -26,7 +26,7 @@ class ImageSaver: NSObject {
     {
         if error != nil {
             self.viewModel.state = .failure
-            print("error")
+            print("error storing image to photo album")
         } else {
             self.viewModel.state = .success
             let impactMed = UIImpactFeedbackGenerator(style: .medium)

@@ -35,24 +35,7 @@ struct PhotoDetailsView: View {
                                             !FavouritesManager.isAlreadyFavourite(imageData: imageData)
                                     }
                                 })
-                            switch viewModel.state {
-                            case .nan:
-                                EmptyView()
-                            case .loading:
-                                ProgressView()
-                                    .scaleEffect(2)
-                                    .frame(width: geo.size.width * 0.9, height: geo.size.width * 0.9)
-                                    .background(Color.black.opacity(0.2))
-
-                                    .clipShape(RoundedRectangle(cornerRadius: 16))
-
-                            case .success:
-                                CompletionView(systemImage: "checkmark.circle.fill", width: geo.size.width * 0.35)
-                                    .environmentObject(viewModel)
-                            default:
-                                CompletionView(systemImage: "xmark.circle.fill", width: geo.size.width * 0.35)
-                                    .environmentObject(viewModel)
-                            }
+                            downloadView(geo: geo)
                         }
                         Spacer()
                     }
@@ -81,8 +64,6 @@ struct PhotoDetailsView: View {
                 })
             }
             .onAppear {
-//                UINavigationBar.appearance().barTintColor = UIColor(Color.primaryColor)
-//                UINavigationBar.appearance().isTranslucent = true
                 viewModel.isFavourite = FavouritesManager.isAlreadyFavourite(imageData: imageData)
             }
             .background(Color.primaryColor)
@@ -92,6 +73,27 @@ struct PhotoDetailsView: View {
 }
 
 extension PhotoDetailsView {
+    @ViewBuilder func downloadView(geo: GeometryProxy) -> some View {
+        switch viewModel.state {
+        case .nan:
+            EmptyView()
+        case .loading:
+            ProgressView()
+                .scaleEffect(2)
+                .frame(width: geo.size.width * 0.9, height: geo.size.width * 0.9)
+                .background(Color.black.opacity(0.2))
+
+                .clipShape(RoundedRectangle(cornerRadius: 16))
+
+        case .success:
+            CompletionView(systemImage: "checkmark.circle.fill", width: geo.size.width * 0.35)
+                .environmentObject(viewModel)
+        default:
+            CompletionView(systemImage: "xmark.circle.fill", width: geo.size.width * 0.35)
+                .environmentObject(viewModel)
+        }
+    }
+    
     struct CompletionView: View {
         let systemImage: String
         let width: CGFloat

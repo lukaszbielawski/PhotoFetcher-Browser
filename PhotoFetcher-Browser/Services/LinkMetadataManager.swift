@@ -7,7 +7,6 @@
 
 import LinkPresentation
 
-/// Transform url to metadata to populate to user.
 final class LinkMetadataManager: NSObject, UIActivityItemSource {
     var linkMetadata: LPLinkMetadata
     let appTitle = Bundle.main.infoDictionary?[kCFBundleNameKey as String] as? String

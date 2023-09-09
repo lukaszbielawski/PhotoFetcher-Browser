@@ -35,7 +35,6 @@ class ImageLoaderViewModel: ObservableObject {
                     print(ImageError.otherError(error: error))
                 default: break
                 }
-                print(res)
             } receiveValue: { [weak self] imagesData in
                 if !(self?.isFinite ?? false) {
                     self?.imagesData += imagesData

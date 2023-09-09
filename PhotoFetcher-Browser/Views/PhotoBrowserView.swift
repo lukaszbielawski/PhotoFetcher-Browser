@@ -42,7 +42,6 @@ struct PhotoBrowserView: View {
                                     .task {
                                         if !viewModel.isFinite {
                                             if index + 1 == $viewModel.imagesData.count {
-                                                print("load")
                                                 viewModel.loadFetchRequest(query: "")
                                             }
                                         }
