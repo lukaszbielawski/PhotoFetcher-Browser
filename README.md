@@ -12,7 +12,7 @@ This is a simple iOS app built using SwiftUI, Kingfisher and Combine; serves as 
   
 <h2>Presentation</h2>
 
-https://github.com/lukaszbielawski/PhotoFetcher-Browser/assets/44624897/6022e008-55a3-4318-960b-504771e179be
+https://github.com/lukaszbielawski/PhotoFetcher-Browser/assets/44624897/54f5d858-ec4d-4766-9bfd-28e6f7c88884
 
 <h2>Requirements</h2>
 
